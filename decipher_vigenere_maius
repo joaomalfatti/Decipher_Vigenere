@@ -1,0 +1,20 @@
+def decifrar_vigenere(texto_cifrado, chave):
+    texto_cifrado = texto_cifrado.upper()
+    chave = chave.upper()
+    texto_decifrado = ""
+    alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    chave_expandida = chave * (len(texto_cifrado) // len(chave)) + chave[:len(texto_cifrado) % len(chave)]
+    for i in range(len(texto_cifrado)):
+        if texto_cifrado[i] in alfabeto:
+            indice_cifrado = alfabeto.index(texto_cifrado[i])
+            indice_chave = alfabeto.index(chave_expandida[i])
+            nova_letra = alfabeto[(indice_cifrado - indice_chave) % 26]
+            texto_decifrado += nova_letra
+        else:
+            texto_decifrado += texto_cifrado[i]
+    return texto_decifrado
+
+texto_cifrado = "dgjgxtie hq kk gphmr i fq mpj prxwpwptl h rsq blkeue dkgtiev tstu z fuh tgfy lacdrucl"
+chave = "DESCULPA"  # Chave utilizada na criptografia
+texto_decifrado = decifrar_vigenere(texto_cifrado, chave)
+print(texto_decifrado)
