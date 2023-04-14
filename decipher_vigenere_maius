@@ -1,20 +1,41 @@
 def decifrar_vigenere(texto_cifrado, chave):
-    texto_cifrado = texto_cifrado.upper()
-    chave = chave.upper()
     texto_decifrado = ""
-    alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    chave_expandida = chave * (len(texto_cifrado) // len(chave)) + chave[:len(texto_cifrado) % len(chave)]
-    for i in range(len(texto_cifrado)):
-        if texto_cifrado[i] in alfabeto:
-            indice_cifrado = alfabeto.index(texto_cifrado[i])
-            indice_chave = alfabeto.index(chave_expandida[i])
-            nova_letra = alfabeto[(indice_cifrado - indice_chave) % 26]
+    alfabeto_maiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alfabeto_minusculas = "abcdefghijklmnopqrstuvwxyz"
+    chave_maiusculas = chave.upper()  # Converter chave para maiúsculas
+    indice_chave = 0  # Índice para percorrer a chave
+
+    for letra in texto_cifrado:
+        if letra in alfabeto_maiusculas:
+            is_maiuscula = True
+        elif letra in alfabeto_minusculas:
+            is_maiuscula = False
+        else:
+            texto_decifrado += letra
+            continue
+
+        if letra.isupper():
+            letra = letra.upper()  # Converter letra para maiúscula para facilitar a busca no alfabeto
+            indice_letra = alfabeto_maiusculas.index(letra)
+            indice_chave_letra = alfabeto_maiusculas.index(chave_maiusculas[indice_chave % len(chave)])
+            nova_letra = alfabeto_maiusculas[(indice_letra - indice_chave_letra) % 26]
+        else:
+            letra = letra.lower()  # Converter letra para minúscula para facilitar a busca no alfabeto
+            indice_letra = alfabeto_minusculas.index(letra)
+            indice_chave_letra = alfabeto_maiusculas.index(chave_maiusculas[indice_chave % len(chave)])
+            nova_letra = alfabeto_minusculas[(indice_letra - indice_chave_letra) % 26]
+
+        if is_maiuscula:
             texto_decifrado += nova_letra
         else:
-            texto_decifrado += texto_cifrado[i]
+            texto_decifrado += nova_letra.lower()
+
+        indice_chave += 1
+
     return texto_decifrado
 
-texto_cifrado = "dgjgxtie hq kk gphmr i fq mpj prxwpwptl h rsq blkeue dkgtiev tstu z fuh tgfy lacdrucl"
-chave = "DESCULPA"  # Chave utilizada na criptografia
+#texto_cifrado = "dgjgxtiehqkkgphmrifqmpjprxwpwtplhrsoblkedkgtifvtstuzfuhtgfxlacdrucl"
+texto_cifrado = "DGJGXTIEHQKKGPHM"
+chave = "desculpa"  # Chave para decifragem
 texto_decifrado = decifrar_vigenere(texto_cifrado, chave)
 print(texto_decifrado)
